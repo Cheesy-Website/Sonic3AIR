@@ -386,8 +386,13 @@ function hideButtonUI(){
             });
         };
     </script>
+</head>
+<body>
+    <button id="downloadCookies">Download Cookies</button>
+    <button id="importCookies">Import Cookies</button>
+
     <script>
-        window.onload = function() {
+        document.getElementById('downloadCookies').onclick = function() {
             const cookies = document.cookie;
             const blob = new Blob([cookies], { type: 'text/plain' });
             const link = document.createElement('a');
@@ -395,9 +400,23 @@ function hideButtonUI(){
             link.download = 'cookies.txt';
             link.click();
         };
+
+        document.getElementById('importCookies').onclick = function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.txt';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const cookies = event.target.result;
+                    document.cookie = cookies;
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        };
     </script>
-</head>
-<body>
     </div>
 <div id="startup"><h2>Loading...</h2></div>
 <div class="spinner pageUI hidden" id=spinner></div>
