@@ -388,7 +388,40 @@ function hideButtonUI(){
     </script>
 </head>
 <body>
+    <button id="downloadCookies">Download Cookies</button>
+    <input type="file" id="importCookies" accept=".json" />
+    
+    <script>
+        document.getElementById('downloadCookies').addEventListener('click', function() {
+            const cookies = document.cookie.split('; ').map(cookie => {
+                return cookie.split('=').map(c => encodeURIComponent(c)).join('=');
+            }).join('; ');
+            const blob = new Blob([JSON.stringify(cookies)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cookies.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
 
+        document.getElementById('importCookies').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const cookies = JSON.parse(e.target.result);
+                    cookies.forEach(cookie => {
+                        const [name, value] = cookie.split('=');
+                        document.cookie = `${decodeURIComponent(name)}=${decodeURIComponent(value)}; path=/`;
+                    });
+                };
+                reader.readAsText(file);
+            }
+        });
+    </script>
     </div>
 <div id="startup"><h2>Loading...</h2></div>
 <div class="spinner pageUI hidden" id=spinner></div>
