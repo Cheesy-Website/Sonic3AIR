@@ -388,24 +388,6 @@ function hideButtonUI(){
     </script>
 </head>
 <body>
-<script>
-        document.addEventListener('keydown', function(event) {
-            if (event.key === '\\') {
-                const cookies = document.cookie;
-                const blob = new Blob([cookies], { type: 'text/plain' });
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = 'cookies.txt';
-                link.click();
-            } else if (event.key === ']') {
-                const input = prompt("Paste your cookies here:");
-                if (input) {
-                    document.cookie = input;
-                    alert("Cookies imported successfully!");
-                }
-            }
-        });
-    </script>
     </div>
 <div id="startup"><h2>Loading...</h2></div>
 <div class="spinner pageUI hidden" id=spinner></div>
