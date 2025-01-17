@@ -388,34 +388,23 @@ function hideButtonUI(){
     </script>
 </head>
 <body>
-    <button id="downloadCookies">Download Cookies</button>
-    <button id="importCookies">Import Cookies</button>
-
-    <script>
-        document.getElementById('downloadCookies').onclick = function() {
-            const cookies = document.cookie;
-            const blob = new Blob([cookies], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'cookies.txt';
-            link.click();
-        };
-
-        document.getElementById('importCookies').onclick = function() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.txt';
-            input.onchange = e => {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const cookies = event.target.result;
-                    document.cookie = cookies;
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        };
+<script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === '\\') {
+                const cookies = document.cookie;
+                const blob = new Blob([cookies], { type: 'text/plain' });
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'cookies.txt';
+                link.click();
+            } else if (event.key === ']') {
+                const input = prompt("Paste your cookies here:");
+                if (input) {
+                    document.cookie = input;
+                    alert("Cookies imported successfully!");
+                }
+            }
+        });
     </script>
     </div>
 <div id="startup"><h2>Loading...</h2></div>
